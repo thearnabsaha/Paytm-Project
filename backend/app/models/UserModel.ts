@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    balence: {
+        type: Number,
+        required: true,
+    },
     lastname: {
         type: String,
         required: true,

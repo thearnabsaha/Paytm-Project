@@ -26,64 +26,127 @@ const SignInschema = z.object({
     .regex(/[0-9]/, { message: 'Password must contain at least one number' })
     .regex(/[@$!%*?&]/, { message: 'Password must contain at least one special character' }),
 });
-    export const UserSignup = async (req:Request, res:Response) => {
-    try {
-      const result = SignUpschema.safeParse(req.body);
-      if (!result.success) {
-        res.status(400).send(result.error.format());
+export const UserSignup = async (req: Request, res: Response) => {
+  try {
+    const result = SignUpschema.safeParse(req.body);
+    if (!result.success) {
+      res.status(400).send(result.error.format());
+    } else {
+      const user = await User.findOne({ username: req.body.username })
+      if (user) {
+        res.status(409).json({ message: 'User Already Exists' })
       } else {
-        const user=await User.findOne({ username:req.body.username })
-        if(user){
-          res.status(409).send('User Already Exists')
-        }else{
-          const hashedPassword=await bcrypt.hash(req.body.password,10)
-          await User.create({
-            username:req.body.username,
-            email:req.body.email,
-            firstname:req.body.firstname,
-            lastname:req.body.lastname,
-            password:hashedPassword
-          })
-          res.status(201).send("User Registered Successfully!")
-        }
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const amount = Math.floor(Math.random() * 1000) * 10
+        await User.create({
+          username: req.body.username,
+          email: req.body.email,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          password: hashedPassword,
+          balence: amount
+        })
+        res.status(201).json({ message: "User Registered Successfully!" })
       }
-    } catch (error) {
-      console.error(error)
-      res.status(500).send(error)
     }
-    };
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error)
+  }
+};
 
-    export const UserSignin= async (req:Request, res:Response) => {
-      try {
-        const result = SignInschema.safeParse(req.body);
-        if (!result.success) {
-          res.status(400).send(result.error.format());
+export const UserSignin = async (req: Request, res: Response) => {
+  try {
+    const result = SignInschema.safeParse(req.body);
+    if (!result.success) {
+      res.status(400).send(result.error.format());
+    } else {
+      const user = await User.findOne({ username: req.body.username })
+      if (!user) {
+        res.status(404).send("User Doesn't Exists")
+      } else {
+        const matched = await bcrypt.compare(req.body.password, user.password)
+        if (matched) {
+          const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY as string, { expiresIn: "1h" })
+          res.status(200).json({ token: token })
         } else {
-          const user=await User.findOne({username:req.body.username})
-          if(!user){
-            res.status(404).send("User Doesn't Exists")
-          }else{
-            const matched=await bcrypt.compare(req.body.password,user.password)
-            if(matched){
-              const token=jwt.sign({id:user._id},process.env.JWT_SECRET_KEY as string,{expiresIn:"1h"})
-              res.status(200).send(token)
-            }else{
-              res.status(401).send("Invalid Credentials")
-            }
-          }
+          res.status(401).send("Invalid Credentials")
         }
-      } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
       }
-    };
-    export const userValue=async (req:Request, res:Response) => {
-      try {
-        const user =await User.findOne({_id:req.id})
-        res.send(user)
-      } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+};
+export const userValue = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ _id: req.id })
+    res.status(200).json({
+      data: {
+        username: user?.username,
+        firstname: user?.firstname,
+        lastname: user?.lastname,
+        email: user?.email,
+        balence: user?.balence
       }
-    };
-    
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+};
+export const OtherUserValue = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ username: req.params.username })
+    if (!user) {
+      res.status(200).json({ message: "The User Doesn't Exists!" })
+    } else {
+      res.status(200).json({
+        data: {
+          username: user?.username,
+          firstname: user?.firstname,
+          lastname: user?.lastname,
+          email: user?.email,
+        }
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+};
+export const FilterUsers = async (req: Request, res: Response) => {
+  try {
+    const {name}=req.query
+      const query = name
+        ? {
+          $or: [
+          { username: { $regex: name, $options: 'i' } },
+          { firstname: { $regex: name, $options: 'i' } },
+          { lastname: { $regex: name, $options: 'i' } },
+          { email: { $regex: name, $options: 'i' } },
+          ],
+        }
+        : {};
+        const users=await User.find(query)
+    // res.status(200).json({
+    //   users:{
+    //       username:users.forEach((e)=>{
+    //         e.username
+    //       })
+    //       // firstname,
+    //       // lastname,
+    //       // email
+    //   }
+    // })
+    // const usernames=users.map((e)=>{
+    //   username:e.username
+    // })
+    // console.log(usernames)
+    res.send(users)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+};
