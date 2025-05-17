@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    balence: {
+    balance: {
         type: Number,
         required: true,
     },

@@ -45,7 +45,7 @@ export const UserSignup = async (req: Request, res: Response) => {
           firstname: req.body.firstname,
           lastname: req.body.lastname,
           password: hashedPassword,
-          balence: amount
+          balance: amount
         })
         res.status(201).json({ message: "User Registered Successfully!" })
       }
@@ -88,7 +88,7 @@ export const userValue = async (req: Request, res: Response) => {
         firstname: user?.firstname,
         lastname: user?.lastname,
         email: user?.email,
-        balence: user?.balence
+        balance: user?.balance
       }
     })
   } catch (error) {
@@ -155,7 +155,7 @@ export const sendMoney = async (req: Request, res: Response) => {
       res.status(400).json({ message: "Invalid Transaction!" })
       return;
     }
-    if (to.balence < Number(amount)) {
+    if (to.balance < Number(amount)) {
       await session.abortTransaction();
       res.status(400).json({ message: "Insufficient Amount" })
       return;
@@ -170,9 +170,9 @@ export const sendMoney = async (req: Request, res: Response) => {
       res.status(400).json({ message: "You Can't Send Negetive Amount" })
       return;
     }
-    from.balence-=amount;
+    from.balance-=amount;
     await from.save({session})
-    to.balence+=amount;
+    to.balance+=amount;
     await to.save({session})
     await session.commitTransaction();
     res.status(200).json({ message: "Transaction Successful!" })
