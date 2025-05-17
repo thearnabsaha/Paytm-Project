@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken"
 import { User } from "../models/UserModel";
 import { Request, Response } from "express";
 import { z } from 'zod';
+import mongoose from "mongoose";
 const SignUpschema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   username: z.string().min(3, { message: 'Username must be at least 3 characters long' }),
@@ -54,7 +55,6 @@ export const UserSignup = async (req: Request, res: Response) => {
     res.status(500).send(error)
   }
 };
-
 export const UserSignin = async (req: Request, res: Response) => {
   try {
     const result = SignInschema.safeParse(req.body);
@@ -118,35 +118,60 @@ export const OtherUserValue = async (req: Request, res: Response) => {
 };
 export const FilterUsers = async (req: Request, res: Response) => {
   try {
-    const {name}=req.query
-      const query = name
-        ? {
-          $or: [
+    const { name } = req.query
+    const query = name
+      ? {
+        $or: [
           { username: { $regex: name, $options: 'i' } },
           { firstname: { $regex: name, $options: 'i' } },
           { lastname: { $regex: name, $options: 'i' } },
           { email: { $regex: name, $options: 'i' } },
-          ],
-        }
-        : {};
-        const users=await User.find(query)
-    // res.status(200).json({
-    //   users:{
-    //       username:users.forEach((e)=>{
-    //         e.username
-    //       })
-    //       // firstname,
-    //       // lastname,
-    //       // email
-    //   }
-    // })
-    // const usernames=users.map((e)=>{
-    //   username:e.username
-    // })
-    // console.log(usernames)
-    res.send(users)
+        ],
+      }
+      : {};
+    const users = await User.find(query)
+    res.status(200).json({
+      users: users.map((e) => ({
+        username: e.username,
+        firstname: e.firstname,
+        lastname: e.lastname,
+        email: e.email
+      }))
+    })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
+  }
+};
+export const sendMoney = async (req: Request, res: Response) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const to = await User.findOne({username:req.params.username})
+    const from = await User.findOne({_id:req.id})
+    const {amount}= req.query
+    if(!to||!amount){
+      res.status(200).json({message:"Recipent Doesn't Exists!"})
+    }else{
+      if(to.balence<Number(amount)){
+      res.status(200).json({message:"Insufficient Amount"})
+      return;
+      }
+      if(Number(amount)>10000){
+      res.status(200).json({message:"You Can't Send More Than 10000 INR In One Go"})
+      return;
+      }
+      await User.updateOne({username:req.params.username},{$set:{balence:Number(to?.balence)+Number(amount)}})
+      await User.updateOne({_id:req.id},{$set:{balence:Number(from?.balence)-Number(amount)}})
+      res.status(200).json({message:"Transaction Successful!"})
+    }
+
+    await session.commitTransaction();
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+    await session.abortTransaction();
+  } finally {
+    session.endSession();
   }
 };

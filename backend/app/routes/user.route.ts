@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { jwtAuth } from "../middlewares/jwtMiddleware";
-import { FilterUsers, OtherUserValue, UserSignin, UserSignup, userValue } from "../controllers/user.controller";
+import { FilterUsers, OtherUserValue, sendMoney, UserSignin, UserSignup, userValue } from "../controllers/user.controller";
 
 const router = Router();
 
@@ -9,5 +9,6 @@ router.post("/signin", UserSignin);
 router.get("/user", jwtAuth, userValue);
 router.get("/user/:username", OtherUserValue);
 router.get("/filter", FilterUsers);
+router.post("/send/:username", jwtAuth, sendMoney);
 
 export default router;
