@@ -147,26 +147,35 @@ export const sendMoney = async (req: Request, res: Response) => {
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
-    const to = await User.findOne({username:req.params.username})
-    const from = await User.findOne({_id:req.id})
-    const {amount}= req.query
-    if(!to||!amount){
-      res.status(200).json({message:"Recipent Doesn't Exists!"})
-    }else{
-      if(to.balence<Number(amount)){
-      res.status(200).json({message:"Insufficient Amount"})
+    const to = await User.findOne({ username: req.params.username }).session(session)
+    const from = await User.findOne({ _id: req.id }).session(session)
+    const amount = Number(req.query.amount)
+    if (!to || isNaN(amount) || !from) {
+      await session.abortTransaction();
+      res.status(400).json({ message: "Invalid Transaction!" })
       return;
-      }
-      if(Number(amount)>10000){
-      res.status(200).json({message:"You Can't Send More Than 10000 INR In One Go"})
-      return;
-      }
-      await User.updateOne({username:req.params.username},{$set:{balence:Number(to?.balence)+Number(amount)}})
-      await User.updateOne({_id:req.id},{$set:{balence:Number(from?.balence)-Number(amount)}})
-      res.status(200).json({message:"Transaction Successful!"})
     }
-
+    if (to.balence < Number(amount)) {
+      await session.abortTransaction();
+      res.status(400).json({ message: "Insufficient Amount" })
+      return;
+    }
+    if (Number(amount) > 10000) {
+      await session.abortTransaction();
+      res.status(400).json({ message: "You Can't Send More Than 10000 INR In One Go" })
+      return;
+    }
+    if (Number(amount) < 0) {
+      await session.abortTransaction();
+      res.status(400).json({ message: "You Can't Send Negetive Amount" })
+      return;
+    }
+    from.balence-=amount;
+    await from.save({session})
+    to.balence+=amount;
+    await to.save({session})
     await session.commitTransaction();
+    res.status(200).json({ message: "Transaction Successful!" })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
