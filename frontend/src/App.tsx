@@ -7,9 +7,10 @@ const App = () => {
     <div>
           <BrowserRouter>
       <Routes>
+        <Route path="signup" element={<Signup />} />
+        <Route path="signin" element={<Signin />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<Signin />} />
-          <Route path="signup" element={<Signup />} />
+          {/* <Route index element={<Signin />} /> */}
           {/* <Route path="contact" element={<Creadentials />} /> */}
           {/* <Route path="*" element={<Creadentials />} /> */}
         </Route>

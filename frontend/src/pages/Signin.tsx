@@ -36,7 +36,7 @@ const Signin = () => {
     function onSubmit(values: z.infer<typeof SignInschema>) {
         console.log(values)
         SignInform.reset()
-        navigate("/user")
+        navigate("/dashboard")
     }
     return (
         <div className='flex'>

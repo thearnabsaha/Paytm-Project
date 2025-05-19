@@ -38,7 +38,7 @@ const Signup = () => {
   function onSubmit(values: z.infer<typeof SignUpschema>) {
     console.log(values)
     SignUpform.reset()
-    navigate("/")
+    navigate("/signin")
   }
   return (
     <div className='flex'>
