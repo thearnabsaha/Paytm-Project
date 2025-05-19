@@ -1,15 +1,20 @@
-import axios from "axios"
-import { Button } from "./components/ui/button"
-import { useEffect } from "react"
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Signup from "./pages/Signup";
+import Signin from "./pages/Signin";
 const App = () => {
-  useEffect(() => {
-    axios.get("/api").then((e)=>console.log(e))
-  }, [])
-  
   return (
     <div>
-      <Button>Click Me</Button>
+          <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Signin />} />
+          <Route path="signup" element={<Signup />} />
+          {/* <Route path="contact" element={<Creadentials />} /> */}
+          {/* <Route path="*" element={<Creadentials />} /> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
     </div>
   )
 }
