@@ -1,7 +1,83 @@
+"use client"
+
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+const SignInschema = z.object({
+    username: z.string().min(3, { message: 'Username must be at least 3 characters long' }),
+    password: z
+        .string()
+        .min(8, { message: 'Password must be at least 8 characters long' })
+        .regex(/[A-Z]/, { message: 'Password must contain at least one uppercase letter' })
+        .regex(/[a-z]/, { message: 'Password must contain at least one lowercase letter' })
+        .regex(/[0-9]/, { message: 'Password must contain at least one number' })
+        .regex(/[@$!%*?&]/, { message: 'Password must contain at least one special character' }),
+});
+import image from '../assets/image.jpg'
+import { useNavigate } from "react-router-dom"
 const Signin = () => {
-  return (
-    <div>Signin</div>
-  )
+    const navigate=useNavigate()
+    const SignInform = useForm<z.infer<typeof SignInschema>>({
+        resolver: zodResolver(SignInschema),
+        defaultValues: {
+            username: "",
+            password: "",
+        },
+    })
+    function onSubmit(values: z.infer<typeof SignInschema>) {
+        console.log(values)
+        SignInform.reset()
+        navigate("/user")
+    }
+    return (
+        <div className='flex'>
+            <div className='w-[50vw] h-screen flex flex-col justify-center items-center'>
+                <h1 className="text-3xl mb-10">Login To Your Account</h1>
+                <Form {...SignInform}>
+                    <form onSubmit={SignInform.handleSubmit(onSubmit)} className="space-y-3 w-96">
+                        <FormField
+                            control={SignInform.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Username" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={SignInform.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Password" {...field} type="password"/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <p className=" underline text-right cursor-pointer" onClick={()=>navigate("/signup")}>Don't have an account? Sign up</p>
+                        <Button type="submit" className="w-full">Submit</Button>
+                    </form>
+                </Form>
+            </div>
+            <div className='w-[50vw] h-screen'>
+                <img src={image} className='h-full' />
+            </div>
+        </div>
+    )
 }
 
 export default Signin
