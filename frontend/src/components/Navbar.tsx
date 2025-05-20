@@ -1,13 +1,17 @@
-import { Input } from "./ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 const Navbar = () => {
   return (
-    <div className="absolute bg-black opacity-50 w-screen">
-        {/* <div className="text-center text-white py-3 flex">
-          <h1>Navbar</h1>
-          <Input className="w-56" placeholder="Search People"/>
-        </div> */}
-    </div>
+<div>
+  <h1>Payments App</h1>
+  <div>
+    <p>Hello, User</p>
+    <Avatar>
+      <AvatarImage src="https://github.com/shadcn.png" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  </div>
+</div>
   )
 }
 
