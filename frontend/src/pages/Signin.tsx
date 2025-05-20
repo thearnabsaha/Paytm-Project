@@ -24,6 +24,8 @@ const SignInschema = z.object({
 });
 import image from '../assets/image.jpg'
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
+const API_URL=import.meta.env.VITE_API_URL
 const Signin = () => {
     const navigate=useNavigate()
     const SignInform = useForm<z.infer<typeof SignInschema>>({
@@ -34,7 +36,11 @@ const Signin = () => {
         },
     })
     function onSubmit(values: z.infer<typeof SignInschema>) {
-        console.log(values)
+        axios.post(`${API_URL}/signin`,values)
+        .then((e)=>{
+            localStorage.setItem("token",e.data.token)
+        })
+        .catch((e)=>console.log(e))
         SignInform.reset()
         navigate("/dashboard")
     }

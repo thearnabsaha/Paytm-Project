@@ -28,22 +28,23 @@ const SignUpschema = z.object({
 });
 import image from '../assets/image.jpg'
 import { useNavigate } from "react-router-dom"
-const API_URL=import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL
 const Signup = () => {
-    const navigate=useNavigate()
+  const navigate = useNavigate()
   const SignUpform = useForm<z.infer<typeof SignUpschema>>({
     resolver: zodResolver(SignUpschema),
     defaultValues: {
       username: "",
-      email:"",
-      password:""
+      email: "",
+      password: "",
+      firstname: "",
+      lastname: "",
     },
   })
   function onSubmit(values: z.infer<typeof SignUpschema>) {
-    // console.log(values)
-    axios.post(`${API_URL}/signup`,values)
-    .then((e)=>console.log(e))
-    .catch((e)=>console.log(e))
+    axios.post(`${API_URL}/signup`, values)
+      .then()
+      .catch((e) => console.log(e))
     SignUpform.reset()
     navigate("/signin")
   }
@@ -52,70 +53,72 @@ const Signup = () => {
       <div className='w-[50vw] h-screen flex flex-col justify-center items-center'>
         <h1 className="text-3xl mb-10">Make a New Account</h1>
         <Form {...SignUpform}>
-      <form onSubmit={SignUpform.handleSubmit(onSubmit)} className="space-y-3 w-96">
+          <form onSubmit={SignUpform.handleSubmit(onSubmit)} className="space-y-3 w-96">
             <FormField
-          control={SignUpform.control}
-          name="firstname"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="First Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={SignUpform.control}
-          name="lastname"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Last Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={SignUpform.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={SignUpform.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={SignUpform.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Password" {...field} type="password"/>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="w-full">Submit</Button>
-      </form>
-    </Form>
+              control={SignUpform.control}
+              name="firstname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="First Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={SignUpform.control}
+              name="lastname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Last Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={SignUpform.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Username" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={SignUpform.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={SignUpform.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Password" {...field} type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <p className=" underline text-right cursor-pointer" onClick={() => navigate("/signin")}>Already have an account? Sign in</p>
+
+            <Button type="submit" className="w-full">Submit</Button>
+          </form>
+        </Form>
       </div>
       <div className='w-[50vw] h-screen'>
         <img src={image} className='h-full' />

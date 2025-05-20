@@ -23,7 +23,7 @@ app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 app.use(express.static('public'));
 app.use(cookieParser());
-app.get('/health', async (req, res) => {
+app.get('/api/v1/health', async (req, res) => {
   const start = Date.now();
   const healthcheck = {
     uptime: process.uptime(),
