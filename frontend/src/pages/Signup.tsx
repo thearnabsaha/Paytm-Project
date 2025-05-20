@@ -4,6 +4,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
+import axios from 'axios'
 import {
   Form,
   FormControl,
@@ -15,6 +16,8 @@ import { Input } from "@/components/ui/input"
 const SignUpschema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   username: z.string().min(3, { message: 'Username must be at least 3 characters long' }),
+  firstname: z.string().min(2, { message: 'Firstname must be at least 2 characters long' }),
+  lastname: z.string().min(1, { message: 'lastname must be at least 1 characters long' }),
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters long' })
@@ -25,6 +28,7 @@ const SignUpschema = z.object({
 });
 import image from '../assets/image.jpg'
 import { useNavigate } from "react-router-dom"
+const API_URL=import.meta.env.VITE_API_URL
 const Signup = () => {
     const navigate=useNavigate()
   const SignUpform = useForm<z.infer<typeof SignUpschema>>({
@@ -36,7 +40,10 @@ const Signup = () => {
     },
   })
   function onSubmit(values: z.infer<typeof SignUpschema>) {
-    console.log(values)
+    // console.log(values)
+    axios.post(`${API_URL}/signup`,values)
+    .then((e)=>console.log(e))
+    .catch((e)=>console.log(e))
     SignUpform.reset()
     navigate("/signin")
   }
@@ -46,6 +53,30 @@ const Signup = () => {
         <h1 className="text-3xl mb-10">Make a New Account</h1>
         <Form {...SignUpform}>
       <form onSubmit={SignUpform.handleSubmit(onSubmit)} className="space-y-3 w-96">
+            <FormField
+          control={SignUpform.control}
+          name="firstname"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="First Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={SignUpform.control}
+          name="lastname"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Last Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={SignUpform.control}
           name="username"
