@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { userAtom } from "@/UserAtom"
+import { useRecoilState } from "recoil"
 const API_URL = import.meta.env.VITE_API_URL
 const Navbar = () => {
   const navigate=useNavigate()
-  const [data, setData] = useState({ firstname: "", lastname: "" })
+   const [data, setData] = useRecoilState(userAtom);
   const token = localStorage.getItem("token")
   useEffect(() => {
     if (!token) {
