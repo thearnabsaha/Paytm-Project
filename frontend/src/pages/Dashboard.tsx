@@ -29,7 +29,7 @@ const Dashboard = () => {
       {
         filteredData.map((e)=>{
           return(
-            <Users firstname={e.firstname} lastname={e.lastname} username={e.username} email={e.email} key={e.username+e.email}/>
+            e.username!=data.username&&<Users firstname={e.firstname} lastname={e.lastname} username={e.username} email={e.email} key={e.username+e.email}/>
           )
         })
       }
