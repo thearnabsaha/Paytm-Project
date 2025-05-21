@@ -14,7 +14,6 @@ const Dashboard = () => {
   const [filteredData, setfilteredData] = useState([{username:"",lastname:"",firstname:"",email:""}])
   const [inputValue, setinputValue] = useState("")
   useEffect(() => {
-
     axios.get(`${API_URL}/filter?name=${inputValue}`, { headers: { token: token } })
     .then((e)=>{
       setfilteredData(e.data.users)
@@ -30,7 +29,7 @@ const Dashboard = () => {
       {
         filteredData.map((e)=>{
           return(
-            <Users firstname={e.firstname} lastname={e.lastname} username={e.username} email={e.email}/>
+            <Users firstname={e.firstname} lastname={e.lastname} username={e.username} email={e.email} key={e.username+e.email}/>
           )
         })
       }

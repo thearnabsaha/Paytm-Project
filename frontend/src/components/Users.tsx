@@ -1,3 +1,18 @@
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+const formSchema = z.object({
+    amount: z.string().min(1,{ message: 'Amount must be atleast 1' }).max(7, { message: 'Amount must be less than 1000000' }),
+})
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import {
@@ -7,21 +22,38 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Badge } from "@/components/ui/badge"
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { Input } from "./ui/input"
+import axios from "axios"
 type UsersProps = {
     username: string;
     firstname: string;
     lastname: string;
     email: string;
 };
+const API_URL = import.meta.env.VITE_API_URL
+const token=localStorage.getItem("token")
+
 const Users = ({ username, firstname, lastname, email }: UsersProps) => {
-    console.log(username, firstname, lastname, email)
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            amount: "",
+        },
+    })
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+            axios.post(`${API_URL}/send/${username}?amount=${values.amount}`,{},{ headers: { token: token } })
+            .then((e)=>{
+                console.log(e)
+            })
+            .catch((e)=>console.log(e))
+            window.location.reload();
+    }
     return (
         <div className="flex justify-between pt-5">
             <div className="flex items-center">
@@ -50,15 +82,30 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
                                 <AvatarImage src="" />
                                 <AvatarFallback>{firstname[0] || "".toUpperCase()}{lastname[0] || "".toUpperCase()}</AvatarFallback>
                             </Avatar>
-                            <div>
                             <h1 className="text-2xl pl-2 capitalize">{firstname} {lastname}</h1>
-                            <span>@{username}</span>
-                            </div>
                         </div>
-                        <p>Amount (in Rs):</p>
                         <div>
-                            <Input placeholder="Enter Amount" className="h-[40px]" />
-                            <Button className="w-full mt-3 h-[40px]">Initiate Transfer</Button>
+                            <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                                    <FormField
+                                        control={form.control}
+                                        name="amount"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Amount (in Rs):</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Enter Amount" className="h-[40px]" {...field} type="number"/>
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Send Money to @{username}
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <Button type="submit" className="w-full h-[40px]">Initiate Transfer</Button>
+                                </form>
+                            </Form>
                         </div>
                     </DialogHeader>
                 </DialogContent>
