@@ -4,15 +4,7 @@ import { useForm } from "react-hook-form"
 const formSchema = z.object({
     amount: z.string().min(1,{ message: 'Amount must be atleast 1' }).max(7, { message: 'Amount must be less than 1000000' }),
 })
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import {Form,FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessage} from "@/components/ui/form"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import {
