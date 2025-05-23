@@ -56,14 +56,13 @@ const Navbar = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/dashboard")}>Dashboard</DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/profile")}>Profile</DropdownMenuItem>
-            <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Logout</DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
               <p>Dark Mode</p>
               <Switch
               checked={swtichChecked}
               onCheckedChange={handleSwitch}
             /></DropdownMenuItem>
-
+            <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
