@@ -31,7 +31,7 @@ const Navbar = () => {
     navigate("/signup")
   }
   return (
-    <div className="flex justify-between px-10 py-5 border">
+    <div className="flex justify-between px-20 py-5 border">
       <h1 className="text-3xl font-bold">Payments App</h1>
       <div className="flex items-center">
         <p className="text-xl pr-2">Hello, {data.firstname}</p>
@@ -45,8 +45,10 @@ const Navbar = () => {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer" onClick={()=>navigate("/dashboard")}>Dashboard</DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" onClick={()=>navigate("/profile")}>Profile</DropdownMenuItem>
             <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Theme</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

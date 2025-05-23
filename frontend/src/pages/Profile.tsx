@@ -14,8 +14,7 @@ const Profile = () => {
     const [data, _setData] = useRecoilState(userAtom);
     return (
         <div>
-
-            <div className="flex px-10 justify-between py-5">
+            <div className="flex px-20 justify-between py-5">
                 <Card className="w-[40vw] h-[30vh]">
                     <CardHeader>
                         <CardTitle className="flex flex-col items-center">

@@ -18,7 +18,7 @@ const Dashboard = () => {
       .catch((e) => console.log(e))
   }, [inputValue])
   return (
-    <div className="px-10">
+    <div className="px-20">
       <h1 className="font-bold text-2xl pt-5">Your Balence : {data.balance}</h1>
       <h1 className="font-bold text-xl pt-5 pb-3">Search Users</h1>
       <Input placeholder="Search for Users here" value={inputValue} onChange={(e) => { setinputValue(e.target.value) }} />
