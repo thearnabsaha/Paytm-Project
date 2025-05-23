@@ -85,6 +85,7 @@ export const userValue = async (req: Request, res: Response) => {
     const user = await User.findOne({ _id: req.id })
     res.status(200).json({
       data: {
+        id:user?._id,
         username: user?.username,
         firstname: user?.firstname,
         lastname: user?.lastname,

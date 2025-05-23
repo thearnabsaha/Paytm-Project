@@ -28,7 +28,6 @@ const Profile = () => {
         axios.get(`${API_URL}/transaction/${data.username}`, { headers: { token: token } })
         .then((e)=>{
             setTransactions(e.data.transactions)
-            console.log(e.data.transactions)
         })
         .catch((e)=>console.log(e))
     }, [data.username])
@@ -63,12 +62,14 @@ const Profile = () => {
                         {
                             transactions.map((e)=>{
                                 return(
-                                    <div className="border h-40 m-2 text-center p-2 rounded-md" key={e._id}>
-                                        <p>Transaction No : {e._id}</p>
-                                        <p>To : {e.to}</p>
-                                        <p>From : {e.from}</p>
-                                        <p>Amount : {e.amount}</p>
-                                        <p>Transaction Time : {new Date(e.createdAt).toLocaleString()}</p>
+                                    <div className={`border rounded-md p-5 m-2 text-black ${e.from!==data.id?" bg-green-100":"bg-red-100"}`} key={e._id}>
+                                        <div className="flex justify-between items-center mb-5">
+                                        <p><span className="font-bold">Transaction No : </span>{e._id}</p>
+                                        <p className={`text-xl border rounded-md p-2 font-bold ${e.from!==data.id?" text-green-500 bg-green-200":"text-red-500 bg-red-200"}`}>{e.from!==data.id?"+":"-"}{e.amount}/-</p>
+                                        </div>
+                                        <p><span className="font-bold">To : </span>{e.to}</p>
+                                        <p><span className="font-bold">From : </span>{e.from}</p>
+                                        <p className="mt-5"><span className="font-bold">Transaction Time : </span>{new Date(e.createdAt).toLocaleString()}</p>
                                     </div>
                                 )
                             })
