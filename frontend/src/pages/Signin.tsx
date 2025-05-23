@@ -39,10 +39,10 @@ const Signin = () => {
         axios.post(`${API_URL}/signin`,values)
         .then((e)=>{
             localStorage.setItem("token",e.data.token)
+            navigate("/dashboard")
         })
         .catch((e)=>console.log(e))
         SignInform.reset()
-        navigate("/dashboard")
     }
     return (
         <div className='flex'>

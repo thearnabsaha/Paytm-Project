@@ -19,14 +19,13 @@ const Navbar = () => {
   const token = localStorage.getItem("token")
   useEffect(() => {
     if (!token) {
+      navigate("/signup")
       return;
     }
     axios.get(`${API_URL}/user`, { headers: { token: token } })
       .then((e) => setData(e.data.data))
       .catch((e) => console.log(e))
   }, [])
-  const firstname = data.firstname;
-  const lastname = data.lastname;
   const logoutHandler=()=>{
     localStorage.removeItem("token")
     navigate("/signup")
@@ -35,12 +34,12 @@ const Navbar = () => {
     <div className="flex justify-between px-10 py-5 border">
       <h1 className="text-3xl font-bold">Payments App</h1>
       <div className="flex items-center">
-        <p className="text-xl pr-2">Hello, {firstname}</p>
+        <p className="text-xl pr-2">Hello, {data.firstname}</p>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>
               <AvatarImage src="" />
-              <AvatarFallback className=" uppercase">{firstname[0] || "".toUpperCase()}{lastname[0] || "".toUpperCase()}</AvatarFallback>
+              <AvatarFallback className=" uppercase">{data.firstname[0] || "".toUpperCase()}{data.lastname[0] || "".toUpperCase()}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
