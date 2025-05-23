@@ -126,6 +126,24 @@ export const FilterUsers = async (req: Request, res: Response) => {
           { firstname: { $regex: name, $options: 'i' } },
           { lastname: { $regex: name, $options: 'i' } },
           { email: { $regex: name, $options: 'i' } },
+          {
+            $expr: {
+              $regexMatch: {
+                input: { $concat: ['$firstname', ' ', '$lastname'] },
+                regex: name,
+                options: 'i',
+              }
+            }
+          },
+          {
+            $expr: {
+              $regexMatch: {
+                input: { $concat: ['$lastname', ' ', '$firstname'] },
+                regex: name,
+                options: 'i',
+              }
+            }
+          }
         ],
       }
       : {};
@@ -170,10 +188,10 @@ export const sendMoney = async (req: Request, res: Response) => {
       res.status(400).json({ message: "You Can't Send Negetive Amount" })
       return;
     }
-    from.balance-=amount;
-    await from.save({session})
-    to.balance+=amount;
-    await to.save({session})
+    from.balance -= amount;
+    await from.save({ session })
+    to.balance += amount;
+    await to.save({ session })
     await session.commitTransaction();
     res.status(200).json({ message: "Transaction Successful!" })
   } catch (error) {
