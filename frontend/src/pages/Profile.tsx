@@ -15,8 +15,8 @@ const token = localStorage.getItem("token")
 
 type Transaction = {
     _id: string;
-    to: string;
-    from: string;
+    to: {username:string,firstname:string,lastname:string,_id:string};
+    from: {username:string,firstname:string,lastname:string,_id:string};
     amount: number;
     createdAt: string;
 };
@@ -31,7 +31,6 @@ const Profile = () => {
         })
         .catch((e)=>console.log(e))
     }, [data.username])
-
     return (
         <div>
             <div className="flex px-20 justify-between py-5">
@@ -62,13 +61,13 @@ const Profile = () => {
                         {
                             transactions.map((e)=>{
                                 return(
-                                    <div className={`border rounded-md p-5 m-2 text-black ${e.from!==data.id?" bg-green-100":"bg-red-100"}`} key={e._id}>
+                                    <div className={`border rounded-md p-5 m-2`} key={e._id}>
                                         <div className="flex justify-between items-center mb-5">
                                         <p><span className="font-bold">Transaction No : </span>{e._id}</p>
-                                        <p className={`text-xl border rounded-md p-2 font-bold ${e.from!==data.id?" text-green-500 bg-green-200":"text-red-500 bg-red-200"}`}>{e.from!==data.id?"+":"-"}{e.amount}/-</p>
+                                        <p className={`text-xl border rounded-md p-2 font-bold ${e.from._id!==data.id?" text-green-500":"text-red-500"}`}>{e.from._id!==data.id?"+":"-"}{e.amount}/-</p>
                                         </div>
-                                        <p><span className="font-bold">To : </span>{e.to}</p>
-                                        <p><span className="font-bold">From : </span>{e.from}</p>
+                                        <p className=" font-light"><span className="font-bold capitalize">To : {e.to.firstname} {e.to.lastname}</span> @{e.to.username}</p>
+                                        <p className=" font-light"><span className="font-bold">From : {e.from.firstname} {e.from.lastname}</span> @{e.from.username}</p>
                                         <p className="mt-5"><span className="font-bold">Transaction Time : </span>{new Date(e.createdAt).toLocaleString()}</p>
                                     </div>
                                 )
