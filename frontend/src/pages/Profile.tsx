@@ -4,7 +4,6 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -14,8 +13,8 @@ const Profile = () => {
     const [data, _setData] = useRecoilState(userAtom);
     return (
         <div>
-            <div className="flex px-20 justify-between py-5">
-                <Card className="w-[40vw] h-[30vh]">
+            <div className="flex px-20 justify-between py-5 md:bg-red-600">
+                <Card className="w-[40vw] h-[30vh] m-1">
                     <CardHeader>
                         <CardTitle className="flex flex-col items-center">
                             <Avatar className="size-15">
@@ -33,7 +32,7 @@ const Profile = () => {
                             <p className="font-bold">Balance : <span className="font-light">{data.balance} </span></p>
                     </CardContent>
                 </Card>
-                <Card className="w-[50vw] h-[80vh]">
+                <Card className="w-[50vw] h-[80vh] m-1">
                     <CardHeader className="text-center">
                         <CardTitle className="text-2xl">Transaction</CardTitle>
                         <CardDescription>Here you will see all Your Transactions</CardDescription>
