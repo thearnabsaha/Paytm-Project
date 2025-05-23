@@ -206,4 +206,14 @@ export const sendMoney = async (req: Request, res: Response) => {
 };
 export const showTransaction = async (req: Request, res: Response) => {
   const user = await User.findOne({ username: req.params.username })
+  if(!user){
+    res.status(404).json({ message: "Transaction Successful!" })
+    return;
+  }
+  const transactions= await Transaction.find({from:user?._id})
+  if(!transactions){
+    res.status(404).json({ message: "Transaction Successful!" })
+    return;
+  }
+  res.status(200).json({ transactions: transactions })
 }

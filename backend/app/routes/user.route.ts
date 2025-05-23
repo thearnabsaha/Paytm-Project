@@ -10,6 +10,6 @@ router.get("/user", jwtAuth, userValue);
 router.get("/user/:username", jwtAuth,OtherUserValue);
 router.get("/filter", jwtAuth,FilterUsers);
 router.post("/send/:username", jwtAuth, sendMoney);
-router.post("/transaction/:id", jwtAuth, showTransaction);
+router.get("/transaction/:username", jwtAuth, showTransaction);
 
 export default router;
