@@ -1,5 +1,6 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Switch } from "@/components/ui/switch"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +13,19 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { userAtom } from "@/store/UserAtom"
 import { useRecoilState } from "recoil"
+import { useTheme } from "./theme-provider"
 const API_URL = import.meta.env.VITE_API_URL
 const Navbar = () => {
-  const navigate=useNavigate()
-   const [data, setData] = useRecoilState(userAtom);
+  const { setTheme } = useTheme()
+  const navigate = useNavigate()
+  const [data, setData] = useRecoilState(userAtom);
   const token = localStorage.getItem("token")
+  const theme=localStorage.getItem("vite-ui-theme")
+  const [swtichChecked, setswtichChecked] = useState(theme=="light"?false:true)
+  const handleSwitch = () => {
+    setswtichChecked(prev => !prev)
+    swtichChecked ? setTheme("light") : setTheme("dark")
+  }
   useEffect(() => {
     if (!token) {
       navigate("/signup")
@@ -26,7 +35,7 @@ const Navbar = () => {
       .then((e) => setData(e.data.data))
       .catch((e) => console.log(e))
   }, [])
-  const logoutHandler=()=>{
+  const logoutHandler = () => {
     localStorage.removeItem("token")
     navigate("/signup")
   }
@@ -45,10 +54,16 @@ const Navbar = () => {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer" onClick={()=>navigate("/dashboard")}>Dashboard</DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer" onClick={()=>navigate("/profile")}>Profile</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/dashboard")}>Dashboard</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/profile")}>Profile</DropdownMenuItem>
             <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Logout</DropdownMenuItem>
-            <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Theme</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <p>Dark Mode</p>
+              <Switch
+              checked={swtichChecked}
+              onCheckedChange={handleSwitch}
+            /></DropdownMenuItem>
+
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
