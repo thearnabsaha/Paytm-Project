@@ -25,9 +25,9 @@ const SignInschema = z.object({
 import image from '../assets/image.jpg'
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-const API_URL=import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL
 const Signin = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const SignInform = useForm<z.infer<typeof SignInschema>>({
         resolver: zodResolver(SignInschema),
         defaultValues: {
@@ -36,17 +36,22 @@ const Signin = () => {
         },
     })
     function onSubmit(values: z.infer<typeof SignInschema>) {
-        axios.post(`${API_URL}/signin`,values)
-        .then((e)=>{
-            localStorage.setItem("token",e.data.token)
-            navigate("/dashboard")
-        })
-        .catch((e)=>console.log(e))
+        axios.post(`${API_URL}/signin`, values)
+            .then((e) => {
+                localStorage.setItem("token", e.data.token)
+                navigate("/dashboard")
+            })
+            .catch((e) => console.log(e))
         SignInform.reset()
     }
     return (
         <div className='flex'>
             <div className='w-[50vw] h-screen flex flex-col justify-center items-center'>
+                <div className="absolute top-50 border text-gray-400 p-5 rounded-md">
+                    <h1 className="text-center">--Don't need to Signup--</h1>
+                    <h1>Demo Username: thearnabsaha</h1>
+                    <h1>Demo Password: Arnab@123</h1>
+                </div>
                 <h1 className="text-3xl mb-10">Login To Your Account</h1>
                 <Form {...SignInform}>
                     <form onSubmit={SignInform.handleSubmit(onSubmit)} className="space-y-3 w-96">
@@ -68,13 +73,13 @@ const Signin = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <Input placeholder="Password" {...field} type="password"/>
+                                        <Input placeholder="Password" {...field} type="password" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <p className=" underline text-right cursor-pointer" onClick={()=>navigate("/signup")}>Don't have an account? Sign up</p>
+                        <p className=" underline text-right cursor-pointer" onClick={() => navigate("/signup")}>Don't have an account? Sign up</p>
                         <Button type="submit" className="w-full">Submit</Button>
                     </form>
                 </Form>

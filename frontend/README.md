@@ -59,16 +59,12 @@ export default tseslint.config({
 
 Here are some ideas to further enhance your project:
 
-- **Debouncing**: Implement debouncing for search inputs or API calls to improve performance and reduce unnecessary requests.
 - **Responsive Design**: Ensure the UI is responsive and works seamlessly on tablets and mobile devices.
-- **Transaction List**: Add a transaction list page to display user transactions in a clear, organized manner.
-- **Edit Profile Page**: Create an edit profile page where users can update their personal information.
-- **Authentication Enhancements**:
-  - **Animations**: After learning [Framer Motion](https://www.framer.com/motion/) and [GSAP](https://gsap.com/), add smooth animations and transitions to enhance the user interface and improve user engagement.
-  - Add Google and GitHub authentication options for easier sign-in.
-    - Allow users to upload and edit their profile photo.
-  - **Profile Photo Editing**: Enable users to change or remove their profile photo from the profile or edit profile page.
-  - **Password Management**:
-  - Add a "Change Password" feature so users can update their password securely.
-  - Implement a "Forgot Password" workflow to allow users to reset their password via email.
-These improvements will enhance usability, accessibility, and the overall user experience.
+- **Animations**: After learning [Framer Motion](https://www.framer.com/motion/) and [GSAP](https://gsap.com/), add smooth animations and transitions to enhance the user interface and improve user engagement.
+- Add Google and GitHub authentication options for easier sign-in.
+- Allow users to upload and edit their profile photo.
+- **Export Transactions**:  
+Add an **Export to Excel** button to the transactions page, allowing users to download their transaction history as an `.xlsx` file for easy record-keeping and analysis.  
+Consider using libraries like [SheetJS](https://sheetjs.com/) (`xlsx`) for implementation.
+- **React Toast for Wrong Credentials**:  
+Implement a toast notification (using a library like [react-toastify](https://fkhadra.github.io/react-toastify/) or [sonner](https://sonner.emilkowal.ski/)) to inform users when they enter wrong credentials during login, providing immediate and clear feedback.

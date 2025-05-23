@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [inputValue, setinputValue] = useState("")
   const [value] = useDebounce(inputValue, 300);
   useEffect(() => {
-    axios.get(`${API_URL}/filter?name=${inputValue}`, { headers: { token: token } })
+    axios.get(`${API_URL}/filter?name=${inputValue || ""}`, { headers: { token: token } })
       .then((e) => {
         setfilteredData(e.data.users)
       })
