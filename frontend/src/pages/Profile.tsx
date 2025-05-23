@@ -15,8 +15,8 @@ const token = localStorage.getItem("token")
 
 type Transaction = {
     _id: string;
-    to: {username:string,firstname:string,lastname:string,_id:string};
-    from: {username:string,firstname:string,lastname:string,_id:string};
+    to: { username: string, firstname: string, lastname: string, _id: string };
+    from: { username: string, firstname: string, lastname: string, _id: string };
     amount: number;
     createdAt: string;
 };
@@ -25,11 +25,14 @@ const Profile = () => {
     const [data, _setData] = useRecoilState(userAtom);
     const [transactions, setTransactions] = useState<Transaction[]>([])
     useEffect(() => {
+        if(!data.username){
+            return;
+        }
         axios.get(`${API_URL}/transaction/${data.username}`, { headers: { token: token } })
-        .then((e)=>{
-            setTransactions(e.data.transactions)
-        })
-        .catch((e)=>console.log(e))
+            .then((e) => {
+                setTransactions(e.data.transactions)
+            })
+            .catch((e) => console.log(e))
     }, [data.username])
     return (
         <div>
@@ -59,12 +62,12 @@ const Profile = () => {
                     </CardHeader>
                     <CardContent className=" overflow-auto">
                         {
-                            transactions.map((e)=>{
-                                return(
+                            transactions.map((e) => {
+                                return (
                                     <div className={`border rounded-md p-5 m-2`} key={e._id}>
                                         <div className="flex justify-between items-center mb-5">
-                                        <p><span className="font-bold">Transaction No : </span>{e._id}</p>
-                                        <p className={`text-xl border rounded-md p-2 font-bold ${e.from._id!==data.id?" text-green-500":"text-red-500"}`}>{e.from._id!==data.id?"+":"-"}{e.amount}/-</p>
+                                            <p><span className="font-bold">Transaction No : </span>{e._id}</p>
+                                            <p className={`text-xl border rounded-md p-2 font-bold ${e.from._id !== data.id ? " text-green-500" : "text-red-500"}`}>{e.from._id !== data.id ? "+" : "-"}{e.amount}/-</p>
                                         </div>
                                         <p className=" font-light"><span className="font-bold capitalize">To : {e.to.firstname} {e.to.lastname}</span> @{e.to.username}</p>
                                         <p className=" font-light"><span className="font-bold">From : {e.from.firstname} {e.from.lastname}</span> @{e.from.username}</p>
