@@ -14,6 +14,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import toast, { Toaster } from 'react-hot-toast';
 import {
     HoverCard,
     HoverCardContent,
@@ -21,6 +22,7 @@ import {
 } from "@/components/ui/hover-card"
 import { Input } from "./ui/input"
 import axios from "axios"
+import { useState } from "react"
 type UsersProps = {
     username: string;
     firstname: string;
@@ -37,23 +39,27 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
             amount: "",
         },
     })
-
+    const [disabled, setdisabled] = useState(false)
     function onSubmit(values: z.infer<typeof formSchema>) {
+            setdisabled(true)
             axios.post(`${API_URL}/send/${username}?amount=${values.amount}`,{},{ headers: { token: token } })
             .then((e)=>{
-                console.log(e)
+                toast.success(e.data.message);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             })
             .catch((e)=>console.log(e))
-            window.location.reload();
     }
     return (
         <div className="flex justify-between pt-5">
+            <Toaster   position="top-right" reverseOrder={false}/>
             <div className="flex items-center">
                 <HoverCard>
                     <HoverCardTrigger className=" cursor-pointer">
                         <Avatar>
                             <AvatarImage src="" />
-                            <AvatarFallback className=" uppercase">{firstname[0] || "".toUpperCase()}{lastname[0] || "".toUpperCase()}</AvatarFallback>
+                            <AvatarFallback className=" uppercase">{firstname[0]}{lastname[0]}</AvatarFallback>
                         </Avatar>
                     </HoverCardTrigger>
                     <HoverCardContent>
@@ -72,7 +78,7 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
                         <div className="flex items-center py-3">
                             <Avatar className="size-12">
                                 <AvatarImage src="" />
-                                <AvatarFallback>{firstname[0] || "".toUpperCase()}{lastname[0] || "".toUpperCase()}</AvatarFallback>
+                                <AvatarFallback className=" uppercase">{firstname[0]}{lastname[0]}</AvatarFallback>
                             </Avatar>
                             <h1 className="text-2xl pl-2 capitalize">{firstname} {lastname}</h1>
                         </div>
@@ -86,7 +92,7 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
                                             <FormItem>
                                                 <FormLabel>Amount (in Rs):</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter Amount" className="h-[40px]" {...field} type="number"/>
+                                                    <Input placeholder="Enter Amount" className="h-[40px]" {...field} type="number" disabled={disabled}/>
                                                 </FormControl>
                                                 <FormDescription>
                                                     Send Money to @{username}
@@ -95,7 +101,7 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
                                             </FormItem>
                                         )}
                                     />
-                                    <Button type="submit" className="w-full h-[40px]">Initiate Transfer</Button>
+                                    <Button type="submit" className="w-full h-[40px]" disabled={disabled}>Initiate Transfer</Button>
                                 </form>
                             </Form>
                         </div>

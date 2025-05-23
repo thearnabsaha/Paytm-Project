@@ -36,7 +36,7 @@ const Navbar = () => {
       <div className="flex items-center">
         <p className="text-xl pr-2">Hello, {data.firstname}</p>
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger className="cursor-pointer">
             <Avatar>
               <AvatarImage src="" />
               <AvatarFallback className=" uppercase">{data.firstname[0] || "".toUpperCase()}{data.lastname[0] || "".toUpperCase()}</AvatarFallback>
@@ -45,8 +45,8 @@ const Navbar = () => {
           <DropdownMenuContent>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem onClick={logoutHandler}>Logout</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={logoutHandler} className="cursor-pointer">Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
