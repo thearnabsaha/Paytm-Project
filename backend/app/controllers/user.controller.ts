@@ -194,7 +194,7 @@ export const sendMoney = async (req: Request, res: Response) => {
     to.balance += amount;
     await to.save({ session })
     await session.commitTransaction();
-    Transaction.create({to:to.id,from:from.id,amount:amount})
+    Transaction.create({ to: to.id, from: from.id, amount: amount })
     res.status(200).json({ message: "Transaction Successful!" })
   } catch (error) {
     console.log(error)
@@ -205,15 +205,20 @@ export const sendMoney = async (req: Request, res: Response) => {
   }
 };
 export const showTransaction = async (req: Request, res: Response) => {
-  const user = await User.findOne({ username: req.params.username })
-  if(!user){
-    res.status(404).json({ message: "Transaction Successful!" })
-    return;
+  try {
+    const user = await User.findOne({ username: req.params.username })
+    if (!user) {
+      res.status(404).json({ message: "Transaction Successful!" })
+      return;
+    }
+    const transactions = await Transaction.find({$or:[{ from: user?._id },{to:user?._id}]})
+    if (!transactions) {
+      res.status(404).json({ message: "Transaction Successful!" })
+      return;
+    }
+    res.status(200).json({ transactions: transactions })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
   }
-  const transactions= await Transaction.find({from:user?._id})
-  if(!transactions){
-    res.status(404).json({ message: "Transaction Successful!" })
-    return;
-  }
-  res.status(200).json({ transactions: transactions })
 }
