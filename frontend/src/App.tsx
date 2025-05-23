@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 const App = () => {
   return (
     <div>
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="Dashboard" element={<Dashboard />} />
+            <Route path="Profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>
