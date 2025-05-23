@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { userAtom } from "@/UserAtom"
+import { userAtom } from "@/store/UserAtom"
 import { useRecoilState } from "recoil"
 const API_URL = import.meta.env.VITE_API_URL
 const Navbar = () => {

@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input"
 import Users from "@/components/Users"
-import { userAtom } from "@/UserAtom"
+import { userAtom } from "@/store/UserAtom"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useRecoilState } from "recoil"
