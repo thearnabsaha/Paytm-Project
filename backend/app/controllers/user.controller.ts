@@ -4,6 +4,7 @@ import { User } from "../models/UserModel";
 import { Request, Response } from "express";
 import { z } from 'zod';
 import mongoose from "mongoose";
+import { Transaction } from "../models/TransactionModel";
 const SignUpschema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   username: z.string().min(3, { message: 'Username must be at least 3 characters long' }),
@@ -193,6 +194,7 @@ export const sendMoney = async (req: Request, res: Response) => {
     to.balance += amount;
     await to.save({ session })
     await session.commitTransaction();
+    Transaction.create({to:to.id,from:from.id,amount:amount})
     res.status(200).json({ message: "Transaction Successful!" })
   } catch (error) {
     console.log(error)
@@ -202,3 +204,6 @@ export const sendMoney = async (req: Request, res: Response) => {
     session.endSession();
   }
 };
+export const showTransaction = async (req: Request, res: Response) => {
+  const user = await User.findOne({ username: req.params.username })
+}
