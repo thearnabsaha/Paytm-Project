@@ -67,7 +67,7 @@ const Profile = () => {
                                     <div className={`border rounded-md p-5 m-2`} key={e._id}>
                                         <div className="flex justify-between items-center mb-5">
                                             <p><span className="font-bold">Transaction No : </span>{e._id}</p>
-                                            <p className={`text-xl border rounded-md p-2 font-bold ${e.from._id !== data.id ? " text-green-500" : "text-red-500"}`}>{e.from._id !== data.id ? "+" : "-"}{e.amount}/-</p>
+                                            <p className={`text-xl p-2 font-bold ${e.from._id !== data.id ? " text-green-500" : "text-red-500"}`}>{e.from._id !== data.id ? "+" : "-"}{e.amount}/-</p>
                                         </div>
                                         <p className=" font-light"><span className="font-bold capitalize">To : {e.to.firstname} {e.to.lastname}</span> @{e.to.username}</p>
                                         <p className=" font-light"><span className="font-bold">From : {e.from.firstname} {e.from.lastname}</span> @{e.from.username}</p>
