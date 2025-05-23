@@ -4,19 +4,21 @@ import { userAtom } from "@/store/UserAtom"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useRecoilState } from "recoil"
+import { useDebounce } from 'use-debounce';
 const API_URL = import.meta.env.VITE_API_URL
 const token = localStorage.getItem("token")
 const Dashboard = () => {
   const [data, _setData] = useRecoilState(userAtom);
   const [filteredData, setfilteredData] = useState([{ username: "", lastname: "", firstname: "", email: "" }])
   const [inputValue, setinputValue] = useState("")
+  const [value] = useDebounce(inputValue, 300);
   useEffect(() => {
     axios.get(`${API_URL}/filter?name=${inputValue}`, { headers: { token: token } })
       .then((e) => {
         setfilteredData(e.data.users)
       })
       .catch((e) => console.log(e))
-  }, [inputValue])
+  }, [value])
   return (
     <div className="px-20">
       <h1 className="font-bold text-2xl pt-5">Your Balence : {data.balance}</h1>
