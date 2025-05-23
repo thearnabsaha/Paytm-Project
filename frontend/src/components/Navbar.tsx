@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { userAtom } from "@/store/UserAtom"
+import { userAtom } from "@/UserAtom"
 import { useRecoilState } from "recoil"
 import { useTheme } from "./theme-provider"
 const API_URL = import.meta.env.VITE_API_URL
