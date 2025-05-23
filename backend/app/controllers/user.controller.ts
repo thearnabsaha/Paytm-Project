@@ -215,6 +215,7 @@ export const showTransaction = async (req: Request, res: Response) => {
     const transactions = await Transaction.find({$or:[{ from: user?._id },{to:user?._id}]})
     .populate('from')
     .populate('to')
+    .sort({ createdAt: -1 });
     if (!transactions) {
       res.status(404).json({ message: "Transaction Successful!" })
       return;
