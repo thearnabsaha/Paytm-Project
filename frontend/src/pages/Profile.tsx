@@ -36,8 +36,8 @@ const Profile = () => {
     }, [data.username])
     return (
         <div>
-            <div className="flex px-20 justify-between py-5">
-                <Card className="w-[40vw] h-[30vh] m-1">
+            <div className="md:flex md:px-20 sm:px-10 px-6 justify-between py-5 text-sm">
+                <Card className="w-full md:w-[40vw] h-[35vh] sm:h-[30vh] m-1">
                     <CardHeader>
                         <CardTitle className="flex flex-col items-center">
                             <Avatar className="size-15">
@@ -55,16 +55,16 @@ const Profile = () => {
                         <p className="font-bold">Balance : <span className="font-light">{data.balance} </span></p>
                     </CardContent>
                 </Card>
-                <Card className="w-[50vw] h-[80vh] m-1">
+                <Card className="w-full md:w-[50vw] h-[80vh] m-1 mt-5 sm:mt-1">
                     <CardHeader className="text-center">
                         <CardTitle className="text-2xl">Transaction</CardTitle>
                         <CardDescription>Here you will see all Your Transactions</CardDescription>
                     </CardHeader>
-                    <CardContent className=" overflow-auto">
+                    <CardContent className=" overflow-auto p-0">
                         {
                             transactions.map((e) => {
                                 return (
-                                    <div className={`border rounded-md p-5 m-2`} key={e._id}>
+                                    <div className={`border rounded-md p-5 `} key={e._id}>
                                         <div className="flex justify-between items-center mb-5">
                                             <p><span className="font-bold">Transaction No : </span>{e._id}</p>
                                             <p className={`text-xl p-2 font-bold ${e.from._id !== data.id ? " text-green-500" : "text-red-500"}`}>{e.from._id !== data.id ? "+" : "-"}{e.amount}/-</p>

@@ -42,10 +42,10 @@ const Navbar = () => {
   return (
     <div className="flex justify-between px-20 py-5 border">
       <h1 className="text-3xl font-bold sm:block hidden">Payments App</h1>
-      <div className="flex items-center">
+      <div className="flex items-center w-full justify-between sm:w-fit">
         <p className="text-xl sm:pr-2 ">Hello, {data.firstname}</p>
         <DropdownMenu>
-          <DropdownMenuTrigger className="cursor-pointer sm:p-0 pl-15">
+          <DropdownMenuTrigger className="cursor-pointer">
             <Avatar>
               <AvatarImage src="" />
               <AvatarFallback className=" uppercase">{data.firstname[0] || "".toUpperCase()}{data.lastname[0] || "".toUpperCase()}</AvatarFallback>
