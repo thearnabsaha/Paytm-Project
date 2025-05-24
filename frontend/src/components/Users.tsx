@@ -52,7 +52,7 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
             .catch((e)=>console.log(e))
     }
     return (
-        <div className="flex justify-between pt-5">
+        <div className="sm:flex justify-between pt-5">
             <Toaster   position="top-right" reverseOrder={false}/>
             <div className="flex items-center">
                 <HoverCard>
@@ -71,7 +71,7 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
                 <h1 className="pl-3 text-xl capitalize">{firstname} {lastname}</h1>
             </div>
             <Dialog>
-                <DialogTrigger><Button>Send Money</Button></DialogTrigger>
+                <DialogTrigger><Button className="mt-5 ml-12 sm:m-0">Send Money</Button></DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle className="text-2xl text-center">Send Money</DialogTitle>

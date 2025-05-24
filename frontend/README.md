@@ -66,5 +66,3 @@ Here are some ideas to further enhance your project:
 - **Export Transactions**:  
 Add an **Export to Excel** button to the transactions page, allowing users to download their transaction history as an `.xlsx` file for easy record-keeping and analysis.  
 Consider using libraries like [SheetJS](https://sheetjs.com/) (`xlsx`) for implementation.
-- **React Toast for Wrong Credentials**:  
-Implement a toast notification (using a library like [react-toastify](https://fkhadra.github.io/react-toastify/) or [sonner](https://sonner.emilkowal.ski/)) to inform users when they enter wrong credentials during login, providing immediate and clear feedback.

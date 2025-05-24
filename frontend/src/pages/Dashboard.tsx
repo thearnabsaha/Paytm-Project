@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [inputValue, setinputValue] = useState("")
   const [value] = useDebounce(inputValue, 300);
   useEffect(() => {
-    axios.get(`${API_URL}/filter?name=${inputValue || ""}`, { headers: { token: token } })
+    axios.get(`${API_URL}/filter?name=${inputValue || " "}`, { headers: { token: token } })
       .then((e) => {
         setfilteredData(e.data.users)
       })
@@ -21,9 +21,10 @@ const Dashboard = () => {
   }, [value])
   return (
     <div className="px-20">
-      <h1 className="font-bold text-2xl pt-5">Your Balence : {data.balance}</h1>
+      <h1 className="font-bold sm:text-2xl pt-5">Your Balence : {data.balance}</h1>
       <h1 className="font-bold text-xl pt-5 pb-3">Search Users</h1>
       <Input placeholder="Search for Users here" value={inputValue} onChange={(e) => { setinputValue(e.target.value) }} />
+      <div className="mb-10">
       {
         filteredData.map((e) => {
           return (
@@ -31,6 +32,7 @@ const Dashboard = () => {
           )
         })
       }
+      </div>
     </div>
   )
 }
