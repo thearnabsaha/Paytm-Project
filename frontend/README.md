@@ -58,11 +58,7 @@ export default tseslint.config({
 ## Suggested Improvements
 
 Here are some ideas to further enhance your project:
-
-- **Responsive Design**: Ensure the UI is responsive and works seamlessly on tablets and mobile devices.
 - **Animations**: After learning [Framer Motion](https://www.framer.com/motion/) and [GSAP](https://gsap.com/), add smooth animations and transitions to enhance the user interface and improve user engagement.
 - Add Google and GitHub authentication options for easier sign-in.
-- Allow users to upload and edit their profile photo.
-- **Export Transactions**:  
-Add an **Export to Excel** button to the transactions page, allowing users to download their transaction history as an `.xlsx` file for easy record-keeping and analysis.  
+- Add an **Export to Excel** button to the transactions page, allowing users to download their transaction history as an `.xlsx` file for easy record-keeping and analysis.  
 Consider using libraries like [SheetJS](https://sheetjs.com/) (`xlsx`) for implementation.
