@@ -25,6 +25,7 @@ const SignInschema = z.object({
 import image from '../assets/image.jpg'
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import toast, { Toaster } from "react-hot-toast"
 const API_URL = import.meta.env.VITE_API_URL
 const Signin = () => {
     const navigate = useNavigate()
@@ -40,12 +41,20 @@ const Signin = () => {
             .then((e) => {
                 localStorage.setItem("token", e.data.token)
                 navigate("/dashboard")
+                toast.success('Sign In Successfully')
             })
-            .catch((e) => console.log(e))
+            .catch((e) => {
+                console.log(e.response.data)
+                toast.error(e.response.data)
+            })
         SignInform.reset()
     }
     return (
         <div className='flex'>
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
             <div className='w-[50vw] h-screen flex flex-col justify-center items-center'>
                 <div className="absolute top-50 border text-gray-400 p-5 rounded-md">
                     <h1 className="text-center">--Don't need to Signup--</h1>

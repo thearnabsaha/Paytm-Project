@@ -28,6 +28,7 @@ const SignUpschema = z.object({
 });
 import image from '../assets/image.jpg'
 import { useNavigate } from "react-router-dom"
+import toast, { Toaster } from "react-hot-toast"
 const API_URL = import.meta.env.VITE_API_URL
 const Signup = () => {
   const navigate = useNavigate()
@@ -43,13 +44,21 @@ const Signup = () => {
   })
   function onSubmit(values: z.infer<typeof SignUpschema>) {
     axios.post(`${API_URL}/signup`, values)
-      .then()
-      .catch((e) => console.log(e))
+      .then(() => toast.success('Signup Successfully'))
+      .catch((e) => {
+        console.log(e.response.data)
+        toast.error(e.response.data)
+
+      })
     SignUpform.reset()
     navigate("/signin")
   }
   return (
     <div className='flex'>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
       <div className='w-[50vw] h-screen flex flex-col justify-center items-center'>
         <div className="absolute top-30 border text-gray-400 p-5 rounded-md">
           <h1 className="text-center">--Don't need to Signup--</h1>
@@ -120,7 +129,6 @@ const Signup = () => {
               )}
             />
             <p className=" underline text-right cursor-pointer" onClick={() => navigate("/signin")}>Already have an account? Sign in</p>
-
             <Button type="submit" className="w-full">Submit</Button>
           </form>
         </Form>
