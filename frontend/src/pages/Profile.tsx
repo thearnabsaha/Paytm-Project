@@ -7,12 +7,19 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 const API_URL = import.meta.env.VITE_API_URL
 const token = localStorage.getItem("token")
-
+import { LuDownload } from "react-icons/lu";
 type Transaction = {
     _id: string;
     to: { username: string, firstname: string, lastname: string, _id: string };
@@ -25,7 +32,7 @@ const Profile = () => {
     const [data, _setData] = useRecoilState(userAtom);
     const [transactions, setTransactions] = useState<Transaction[]>([])
     useEffect(() => {
-        if(!data.username){
+        if (!data.username) {
             return;
         }
         axios.get(`${API_URL}/transaction/${data.username}`, { headers: { token: token } })
@@ -57,7 +64,17 @@ const Profile = () => {
                 </Card>
                 <Card className="w-full md:w-[50vw] h-[80vh] m-1 mt-5 sm:mt-1">
                     <CardHeader className="text-center">
-                        <CardTitle className="text-2xl">Transaction</CardTitle>
+                        <CardTitle className="text-2xl relative">
+                            <h1>Transaction</h1>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger className=" absolute top-0 right-0 cursor-pointer"><LuDownload /></TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Export Transaction In Excel</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </CardTitle>
                         <CardDescription>Here you will see all Your Transactions</CardDescription>
                     </CardHeader>
                     <CardContent className=" overflow-auto p-0">
