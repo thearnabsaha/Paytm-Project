@@ -53,7 +53,7 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
     }
     return (
         <div className="sm:flex justify-between pt-5">
-            <Toaster   position="top-right" reverseOrder={false}/>
+            <Toaster position="top-right" reverseOrder={false}/>
             <div className="flex items-center">
                 <HoverCard>
                     <HoverCardTrigger className=" cursor-pointer">
@@ -63,8 +63,8 @@ const Users = ({ username, firstname, lastname, email }: UsersProps) => {
                         </Avatar>
                     </HoverCardTrigger>
                     <HoverCardContent>
-                        <p>@{username}</p>
-                        <p>{email}</p>
+                        <p>Username: @{username}</p>
+                        <p>Email: {email}</p>
                     </HoverCardContent>
                 </HoverCard>
 

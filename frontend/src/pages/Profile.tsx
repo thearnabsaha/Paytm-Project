@@ -16,7 +16,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
 const API_URL = import.meta.env.VITE_API_URL
 const token = localStorage.getItem("token")
 import { LuDownload } from "react-icons/lu";
@@ -81,7 +80,7 @@ const Profile = () => {
                         {
                             transactions.map((e) => {
                                 return (
-                                    <div className={`border rounded-md p-5 `} key={e._id}>
+                                    <div className={`border rounded-md p-5 m-1`} key={e._id}>
                                         <div className="flex justify-between items-center mb-5">
                                             <p><span className="font-bold">Transaction No : </span>{e._id}</p>
                                             <p className={`text-xl p-2 font-bold ${e.from._id !== data.id ? " text-green-500" : "text-red-500"}`}>{e.from._id !== data.id ? "+" : "-"}{e.amount}/-</p>
