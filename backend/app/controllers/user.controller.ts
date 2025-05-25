@@ -5,6 +5,8 @@ import { Request, Response } from "express";
 import { z } from 'zod';
 import mongoose from "mongoose";
 import { Transaction } from "../models/TransactionModel";
+import ExcelJS from 'exceljs';
+import * as fs from 'fs';
 const SignUpschema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   username: z.string().min(3, { message: 'Username must be at least 3 characters long' }),
@@ -85,7 +87,7 @@ export const userValue = async (req: Request, res: Response) => {
     const user = await User.findOne({ _id: req.id })
     res.status(200).json({
       data: {
-        id:user?._id,
+        id: user?._id,
         username: user?.username,
         firstname: user?.firstname,
         lastname: user?.lastname,
@@ -209,18 +211,63 @@ export const showTransaction = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ username: req.params.username })
     if (!user) {
+      res.status(404).json({ message: "User Doesn't Exists!" })
+      return;
+    }
+    const transactions = await Transaction.find({ $or: [{ from: user?._id }, { to: user?._id }] })
+      .populate('from')
+      .populate('to')
+      .sort({ createdAt: -1 });
+    if (!transactions) {
+      res.status(404).json({ message: "No Transactions Exists!" })
+      return;
+    }
+    res.status(200).json({ transactions: transactions })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send(error)
+  }
+}
+export const exportTransactions = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ username: req.params.username })
+    if (!user) {
       res.status(404).json({ message: "Transaction Successful!" })
       return;
     }
-    const transactions = await Transaction.find({$or:[{ from: user?._id },{to:user?._id}]})
-    .populate('from')
-    .populate('to')
-    .sort({ createdAt: -1 });
+    const transactions = await Transaction.find({ $or: [{ from: user?._id }, { to: user?._id }] })
+      .populate('from')
+      .populate('to')
+      .sort({ createdAt: -1 });
     if (!transactions) {
       res.status(404).json({ message: "Transaction Successful!" })
       return;
     }
-    res.status(200).json({ transactions: transactions })
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('My Sheet');
+    worksheet.addRow(['Id', 'From', 'To', 'Amount', "Transaction Type"]);
+    transactions.map((e) => {
+      const transactionType = e.from._id.toString() == user._id.toString() ? "SENT" : "RECIEVED"
+      
+      worksheet.addRow([
+        e._id.toString(),
+        e.to && typeof e.to === 'object' && 'username' in e.to ? e.to.username : e.to?.toString(),
+        e.from && typeof e.from === 'object' && 'username' in e.from ? e.from.username : e.from?.toString(),
+        e.amount,
+        transactionType
+      ]);
+    })
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    });
+    await workbook.xlsx.writeFile("Transaction.xlsx");
+    res.download("Transaction.xlsx",(e)=>{
+      console.log(e)
+      fs.unlink("Transaction.xlsx", (e) => {
+        console.log(e)
+      });
+    })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
