@@ -40,6 +40,22 @@ const Profile = () => {
             })
             .catch((e) => console.log(e))
     }, [data.username])
+    const handleExport = () => {
+        axios.get(`${API_URL}/export/${data.username}`, { headers: { token: token }, responseType: "blob" })
+            .then((e) => {
+                const blob = new Blob([e.data], { type: e.headers['content-type'] });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${data.username}-Transctions-report.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .then((e)=>console.log(e))
+    }
     return (
         <div>
             <div className="md:flex md:px-20 sm:px-10 px-6 justify-between py-5 text-sm">
@@ -67,7 +83,7 @@ const Profile = () => {
                             <h1>Transaction</h1>
                             <TooltipProvider>
                                 <Tooltip>
-                                    <TooltipTrigger className=" absolute top-0 right-0 cursor-pointer"><LuDownload /></TooltipTrigger>
+                                    <TooltipTrigger className=" absolute top-0 right-0 cursor-pointer" onClick={handleExport}><LuDownload /></TooltipTrigger>
                                     <TooltipContent>
                                         <p>Export Transaction In Excel</p>
                                     </TooltipContent>
