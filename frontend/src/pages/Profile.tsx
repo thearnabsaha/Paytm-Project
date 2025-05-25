@@ -26,7 +26,6 @@ type Transaction = {
     amount: number;
     createdAt: string;
 };
-
 const Profile = () => {
     const [data, _setData] = useRecoilState(userAtom);
     const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -45,7 +44,6 @@ const Profile = () => {
             .then((e) => {
                 const blob = new Blob([e.data], { type: e.headers['content-type'] });
                 const url = window.URL.createObjectURL(blob);
-
                 const a = document.createElement("a");
                 a.href = url;
                 a.download = `${data.username}-Transctions-report.xlsx`;

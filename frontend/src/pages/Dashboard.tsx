@@ -6,14 +6,14 @@ import { useEffect, useState } from "react"
 import { useRecoilState } from "recoil"
 import { useDebounce } from 'use-debounce';
 const API_URL = import.meta.env.VITE_API_URL
-const token = localStorage.getItem("token")
 const Dashboard = () => {
   const [data, _setData] = useRecoilState(userAtom);
   const [filteredData, setfilteredData] = useState([{ username: "", lastname: "", firstname: "", email: "" }])
   const [inputValue, setinputValue] = useState("")
   const [value] = useDebounce(inputValue, 300);
   useEffect(() => {
-    axios.get(`${API_URL}/filter?name=${inputValue || " "}`, { headers: { token: token } })
+    const token = localStorage.getItem("token")
+    axios.get(`${API_URL}/filter?name=${value || " "}`, { headers: { token: token } })
       .then((e) => {
         setfilteredData(e.data.users)
       })
