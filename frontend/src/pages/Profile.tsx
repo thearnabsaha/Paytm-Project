@@ -1,18 +1,7 @@
 import { userAtom } from "@/store/UserAtom";
 import { useRecoilState } from "recoil";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
+import {Card,CardContent,CardDescription,CardHeader,CardTitle} from "@/components/ui/card"
+import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useEffect, useState } from "react";
 import axios from "axios";
