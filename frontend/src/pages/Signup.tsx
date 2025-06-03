@@ -59,15 +59,15 @@ const Signup = () => {
         position="top-right"
         reverseOrder={false}
       />
-      <div className='w-[50vw] h-screen flex flex-col justify-center items-center'>
-        <div className="absolute top-30 border text-gray-400 p-5 rounded-md">
+      <div className='w-full sm:w-[50vw] h-screen flex flex-col justify-center items-center'>
+        <div className="absolute top-5 sm:top-30 border text-gray-400 p-5 rounded-md">
           <h1 className="text-center">--Don't need to Signup--</h1>
           <h1>Demo Username: thearnabsaha</h1>
           <h1>Demo Password: Arnab@123</h1>
         </div>
         <h1 className="text-3xl mb-10">Make a New Account</h1>
         <Form {...SignUpform}>
-          <form onSubmit={SignUpform.handleSubmit(onSubmit)} className="space-y-3 w-96">
+          <form onSubmit={SignUpform.handleSubmit(onSubmit)} className="space-y-3  sm:w-96 w-[90%]">
             <FormField
               control={SignUpform.control}
               name="firstname"
@@ -133,7 +133,7 @@ const Signup = () => {
           </form>
         </Form>
       </div>
-      <div className='w-[50vw] h-screen'>
+      <div className='hidden sm:block sm:w-[50vw] h-screen'>
         <img src={image} className='h-full' />
       </div>
     </div>

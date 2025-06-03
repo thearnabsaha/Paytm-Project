@@ -4,9 +4,9 @@ import { Switch } from "@/components/ui/switch"
 import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { userAtom } from "@/UserAtom"
 import { useRecoilState } from "recoil"
 import { useTheme } from "./theme-provider"
+import { userAtom } from "@/store/UserAtom"
 const API_URL = import.meta.env.VITE_API_URL
 const Navbar = () => {
   const { setTheme } = useTheme()
