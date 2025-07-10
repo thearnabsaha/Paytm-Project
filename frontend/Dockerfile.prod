@@ -1,0 +1,19 @@
+FROM node:22-alpine
+
+WORKDIR /Payments
+
+COPY package*.json ./
+RUN npm install
+
+# 👇 Accept and inject build-time variable
+ARG VITE_API_BASE
+ENV VITE_API_BASE=$VITE_API_BASE
+
+COPY . .
+
+RUN npm run build
+
+ENV PORT=4173
+EXPOSE 4173
+
+CMD ["npm", "run", "preview"]
